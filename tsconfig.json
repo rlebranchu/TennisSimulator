@@ -1,0 +1,13 @@
+{
+    "compilerOptions":{
+        "outDir": "dist",       // Chemin de destination lors de la génération
+        "target": "ES6",        // Version de génération
+        "noEmitOnError": true,  // Ne pas générer de fichier de sortie si une erreur est trouver
+        "strict": true,         // Avoir un degré de qualité de code supérieur
+    },
+    "files": [
+        "main.ts",
+        "src/Match.ts",
+        "src/Player.ts",
+    ]
+}
