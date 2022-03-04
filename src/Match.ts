@@ -5,10 +5,10 @@ import { AVANTAGEVALUE, MAXPOINTINGAME, ORDREPOINT, WINGAMEVALUE } from './Const
 export default class Match {
     private static instance: Match;
 
-    private playerOne: Player = new Player(1);
-    private playerTwo: Player = new Player(2);
-    private currentSet: number = 0; // Premier set : currentSet à zéro (pour gestion d'index de tableau)
-    private isFinished: boolean = false;
+    private _playerOne: Player = new Player(1);
+    private _playerTwo: Player = new Player(2);
+    private _currentSet: number = 0; // Premier set : currentSet à zéro (pour gestion d'index de tableau)
+    private _isFinished: boolean = false;
 
     public static getInstance(): Match {
         return this.instance ?? new Match();
@@ -18,20 +18,22 @@ export default class Match {
         console.log("========================================================" +'\n' +
                     "=================    DEBUT DU MATCH    =================" +'\n' +
                     "========================================================")
-        this.playerOne = new Player(1);
-        this.playerTwo = new Player(2);
+        this._playerOne = new Player(1);
+        this._playerTwo = new Player(2);
+        this._currentSet = 0;
+        this._isFinished = false;
         this.afficheScore();
     }
 
     private afficheScore() : void {
-       this.playerOne.showScore();
-       this.playerTwo.showScore();
+       this._playerOne.showScore();
+       this._playerTwo.showScore();
        console.log('\n');
     }
 
     public playPoint() : void {
         // Si la partie n'est pas fini
-        if(!this.isFinished) {
+        if(!this._isFinished) {
             if(Math.random() > 0.5)  // Random entre 0 et 1 : true et false au probabilité équivalente
                 this.playerOneScores();
             else
@@ -42,37 +44,38 @@ export default class Match {
     // Fonction éxecutée quand le Joueur 1 gagne un point
     public playerOneScores () : void {
         // Si la partie n'est pas fini
-        if(!this.isFinished) {
-            console.log(this.playerOne.name + " gagne le point !" + "\n" + '----------------------------'); 
+        if(!this._isFinished) {
+            console.log(this._playerOne.name + " gagne le point !" + "\n" + '----------------------------'); 
             // Appel l'algorithme qui va calculer les points
-            if(this.playerOne.score[this.currentSet] == 6 && this.playerTwo.score[this.currentSet] == 6){ // Set en Tie-Break
-                this.comparePointTieBreak(this.playerOne, this.playerTwo);
+            if(this._playerOne.score[this._currentSet] == 6 && this._playerTwo.score[this._currentSet] == 6){ // Set en Tie-Break
+                this.comparePointTieBreak(this._playerOne, this._playerTwo);
             } else { // Set normal
-                this.comparePoint(this.playerOne, this.playerTwo);
+                this.comparePoint(this._playerOne, this._playerTwo);
             }
             // On regarde si c'est la fin du jeu, set ou match
-            this.analyseSituationAfterPoint(this.playerOne, this.playerTwo);
+            this.analyseSituationAfterPoint(this._playerOne, this._playerTwo);
         }
     }
 
     // Fonction éxecutée quand le Joueur 2 gagne un point
     public playerTwoScores () : void {
         // Si la partie n'est pas fini
-        if(!this.isFinished) {
-            console.log(this.playerTwo.name + " gagne le point !" + "\n" + '----------------------------'); 
+        if(!this._isFinished) {
+            console.log(this._playerTwo.name + " gagne le point !" + "\n" + '----------------------------'); 
             // Appel l'algorithme qui va calculer les points
             // Si les deux joueurs sont à 6 jeux chacun il faut faire un TieBreak
-            if(this.playerOne.score[this.currentSet] == 6 && this.playerOne.score[this.currentSet] == 6){
-                this.comparePointTieBreak(this.playerTwo, this.playerOne);
+            if(this._playerOne.score[this._currentSet] == 6 && this._playerOne.score[this._currentSet] == 6){
+                this.comparePointTieBreak(this._playerTwo, this._playerOne);
             } else { // Set normal
-                this.comparePoint(this.playerTwo, this.playerOne);
+                this.comparePoint(this._playerTwo, this._playerOne);
             }
             // On regarde si c'est la fin du jeu, set ou match
-            this.analyseSituationAfterPoint(this.playerTwo, this.playerOne);
+            this.analyseSituationAfterPoint(this._playerTwo, this._playerOne);
         }
     }
 
-    private comparePoint(playerWinner : Player, playerLoser: Player) : void {
+    // public only for jest
+    public comparePoint(playerWinner : Player, playerLoser: Player) : void {
         let playerWinnerPoint : Point = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
         let playerLoserPoint : Point = playerLoser.gamePoint;
         switch (playerWinner.gamePoint){ // Condition en fonction de mes points actuels
@@ -101,7 +104,8 @@ export default class Match {
         playerLoser.gamePoint = playerLoserPoint;
     }
 
-    private comparePointTieBreak(playerWinner : Player, playerLoser: Player) : void {
+    // public only for jest
+    public comparePointTieBreak(playerWinner : Player, playerLoser: Player) : void {
         let playerWinnerPoint = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
         let playerLoserPoint = playerLoser.gamePoint;
         if(!isPointNormalType(playerWinnerPoint) && !isPointNormalType(playerLoserPoint)){ // On vérifie que les points actuels sont bien des entiers : sinon erreur
@@ -117,12 +121,13 @@ export default class Match {
         playerLoser.gamePoint = playerLoserPoint;
     }
 
-    private analyseSituationAfterPoint(playerWinner: Player, playerLoser: Player) : void {
+    // pulic only for jest
+    public analyseSituationAfterPoint(playerWinner: Player, playerLoser: Player) : void {
         // On regarde si le joueur à gagné le set
         if(playerWinner.gamePoint == WINGAMEVALUE) {
             console.log(playerWinner.name + " gagne le Jeu !" + "\n" + '----------------------------'); 
             // si oui, il faut passer sur le jeu suivant
-            let isSetWin = playerWinner.changeGame(this.currentSet,playerLoser.score[this.currentSet], true);
+            let isSetWin = playerWinner.changeGame(this._currentSet,playerLoser.score[this._currentSet], true);
             playerLoser.changeGame();
             
             // Le joueur a-t-il gagné le set ?
@@ -130,7 +135,7 @@ export default class Match {
                 
                 console.log(playerWinner.name + " gagne le Set !" + "\n" + '----------------------------'); 
                 // On change de set
-                this.currentSet++;
+                this._currentSet++;
 
                 //Affiche le nouveau score 
                 this.afficheScore();
@@ -142,7 +147,7 @@ export default class Match {
                                 "==================    FIN DU MATCH    ==================" +'\n' +
                                 "===============   VAINQUEUR : "+ playerWinner.name +"   ===============" +'\n' +
                                 "========================================================")
-                    this.isFinished = true;
+                    this._isFinished = true;
                 }
             } else {
                 //Affiche le nouveau score 
@@ -154,4 +159,15 @@ export default class Match {
             this.afficheScore();
         }
     }
+
+    public setScore() : void {
+        // reste a dev
+    }
+
+
+    // GETTER FUNCTIONS (only use for Jest)
+    public getPlayerOne () : Player { return this._playerOne }
+    public getPlayerTwo () : Player { return this._playerTwo }
+    public getCurrentSet () : number { return this._currentSet }
+    public getIsFinished () : boolean { return this._isFinished }
 }

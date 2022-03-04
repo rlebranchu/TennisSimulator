@@ -6,7 +6,7 @@ export default class Player {
     score: Score;       // Nombre de Jeu gagnés par Set
     name: string;       // Nom du Joueur
     gamePoint : Point;  // Point du joueur du jeu en cours
-    nbSetWin: number; // Set gagnés 
+    nbSetWin: number;
 
     constructor(numero: number = 0) {
         this.name = 'Joueur ' + numero;
@@ -25,9 +25,9 @@ export default class Player {
         console.log(scoreString);
     }
 
-    changeGame(currentSet: number = 0, otherPlayerGame : number = 0, previousGameWinning : boolean = false) : boolean {
+    changeGame(currentSet: number = 0, otherPlayerGame : number = 0, currentGameWinning : boolean = false) : boolean {
         let isSetWin = false;
-        if(previousGameWinning){
+        if(currentGameWinning){
             // On gagne un jeu en plus dans le set en cours
             this.score = this.score.map((value, index) => {
                 if(index == currentSet){

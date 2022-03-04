@@ -1,13 +1,19 @@
 {
     "compilerOptions":{
-        "outDir": "dist",       // Chemin de destination lors de la génération
         "target": "ES6",        // Version de génération
-        "noEmitOnError": true,  // Ne pas générer de fichier de sortie si une erreur est trouver
+        "module": "commonjs",   // Module Code Generation: commonjs
+        "noEmitOnError": true,  // Ne pas générer de fichier de sortie si une erreur est trouvée
         "strict": true,         // Avoir un degré de qualité de code supérieur
+        "lib": [                // Library files included in the compilation
+            "esnext",
+            "dom"
+        ],
+        "outDir": "dist",       // Chemin de destination lors de la génération
     },
-    "files": [
-        "main.ts",
-        "src/Match.ts",
-        "src/Player.ts",
+    "include": [
+        "src/**/*"
+, "main.ts"    ],
+    "exclude": [
+      "node_modules"
     ]
 }
