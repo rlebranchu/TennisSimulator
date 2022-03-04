@@ -1,7 +1,7 @@
 import Player from '../../src/Player';
 
 describe('Test Player', () => {
-    var player: Player
+    let player: Player
     
     beforeEach(() => player = new Player(1));
 

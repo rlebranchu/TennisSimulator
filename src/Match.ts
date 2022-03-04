@@ -1,5 +1,5 @@
 import Player from './Player';
-import { isPointNormalType, Point, PointTieBreak } from './Types';
+import { isPointNormalType, Point } from './Types';
 import { AVANTAGEVALUE, MAXPOINTINGAME, ORDREPOINT, WINGAMEVALUE } from './Constantes';
 
 export default class Match {
@@ -7,8 +7,8 @@ export default class Match {
 
     private _playerOne: Player = new Player(1);
     private _playerTwo: Player = new Player(2);
-    private _currentSet: number = 0; // Premier set : currentSet à zéro (pour gestion d'index de tableau)
-    private _isFinished: boolean = false;
+    private _currentSet = 0;        // Premier set : currentSet à zéro (pour gestion d'index de tableau)
+    private _isFinished = false;    // La match est-il finit ?
 
     public static getInstance(): Match {
         return this.instance ?? new Match();
@@ -64,7 +64,7 @@ export default class Match {
             console.log(this._playerTwo.name + " gagne le point !" + "\n" + '----------------------------'); 
             // Appel l'algorithme qui va calculer les points
             // Si les deux joueurs sont à 6 jeux chacun il faut faire un TieBreak
-            if(this._playerOne.score[this._currentSet] == 6 && this._playerOne.score[this._currentSet] == 6){
+            if(this._playerOne.score[this._currentSet] == 6 && this._playerTwo.score[this._currentSet] == 6){
                 this.comparePointTieBreak(this._playerTwo, this._playerOne);
             } else { // Set normal
                 this.comparePoint(this._playerTwo, this._playerOne);
@@ -106,8 +106,8 @@ export default class Match {
 
     // public only for jest
     public comparePointTieBreak(playerWinner : Player, playerLoser: Player) : void {
-        let playerWinnerPoint = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
-        let playerLoserPoint = playerLoser.gamePoint;
+        let playerWinnerPoint : Point = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
+        const playerLoserPoint: Point = playerLoser.gamePoint;
         if(!isPointNormalType(playerWinnerPoint) && !isPointNormalType(playerLoserPoint)){ // On vérifie que les points actuels sont bien des entiers : sinon erreur
             playerWinnerPoint++;
             // Si le score du joueur ayant gagné le point atteint au minimum 7 et qu'il a deux points d'écarts
@@ -127,7 +127,7 @@ export default class Match {
         if(playerWinner.gamePoint == WINGAMEVALUE) {
             console.log(playerWinner.name + " gagne le Jeu !" + "\n" + '----------------------------'); 
             // si oui, il faut passer sur le jeu suivant
-            let isSetWin = playerWinner.changeGame(this._currentSet,playerLoser.score[this._currentSet], true);
+            const isSetWin = playerWinner.changeGame(this._currentSet,playerLoser.score[this._currentSet], true);
             playerLoser.changeGame();
             
             // Le joueur a-t-il gagné le set ?

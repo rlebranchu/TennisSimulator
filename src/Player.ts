@@ -1,5 +1,5 @@
 import { NBMAXGAMEFORWINSET, NBMINGAMEFORWINSET } from './Constantes';
-import {Score, Point, PointTieBreak} from './Types';
+import {Score, Point} from './Types';
 
 export default class Player {
 
@@ -8,7 +8,7 @@ export default class Player {
     gamePoint : Point;  // Point du joueur du jeu en cours
     nbSetWin: number;
 
-    constructor(numero: number = 0) {
+    constructor(numero = 0) {
         this.name = 'Joueur ' + numero;
         this.score = [0,0,0];
         this.gamePoint = 0;
@@ -25,7 +25,7 @@ export default class Player {
         console.log(scoreString);
     }
 
-    changeGame(currentSet: number = 0, otherPlayerGame : number = 0, currentGameWinning : boolean = false) : boolean {
+    changeGame(currentSet = 0, otherPlayerGame = 0, currentGameWinning = false) : boolean {
         let isSetWin = false;
         if(currentGameWinning){
             // On gagne un jeu en plus dans le set en cours
@@ -47,12 +47,13 @@ export default class Player {
                 default: // Dans les autres cas, on ne gagne pas le set en cours
                     break;
             }
+            // On regarde s'il a gagné le set : si oui, on incrémente le nombre de set gagné
+            if(isSetWin)
+                this.nbSetWin++;
         }
         // On repars sur un autre set
         this.gamePoint = 0;
-        // On regarde s'il a gagné le set : si oui, on incrémente le nombre de set gagné
-        if(isSetWin)
-            this.nbSetWin++;
+
         return isSetWin;
     }
 }

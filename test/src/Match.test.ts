@@ -1,9 +1,8 @@
-import { AVANTAGEVALUE, WINGAMEVALUE } from '../../src/Constantes';
+import { AVANTAGEVALUE } from '../../src/Constantes';
 import Match from '../../src/Match';
-import Player from '../../src/Player';
 
 describe('Test Match', () => {
-    var match: Match
+    let match: Match
     
     beforeEach(() => match = Match.getInstance());
 
