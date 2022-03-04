@@ -20,15 +20,19 @@ De plus, il répond aux besoins du projet :
   - playerOneScores() : simuler le point gagné du joueur 1
   - playerTwoScores() : simuler le point gagné du joueur 2
   - playPoint() : simuler le point gagné d'un joueur aléatoirement
-  
+  - Intégration de Jest dans le projets pour effectuer des tests unitaires
+  - Intégration de EsLint pour accentuer la qualité du code 
+ 
 *D'autres fonctions sont définis mais non-utilisables. Elle permettent un bon fonctionnement du programme.
 (Exemple : comparePoint, comparePointTieBreak, analyseSituationAfterPoint, etc.)*
 
 ## Fonctions à venir :
   - setScore : donner un état au match en cours
-  - Intégrer Jest dans le projets pour effectuer des tests unitaires
 
 ## Comment lancer le projet :
   1. Etablir dans main.js l'algorithme de gain de point (via les fonctions établis ci dessus)
-  2. Lancer la commande : npx ts-node main.ts : elle lancera
+  2. Lancer la commande : npm run start
+
+## Comment lancer les tests unitaires :
+  1. Dans le fichier global du projet, lancer la commande : npm test
 
