@@ -10,10 +10,24 @@ type PointTieBreak = number;
 type Point = PointNormal | PointTieBreak;
 
 // Tableau de Sets
-type Score = Array<number>;
+type Score = [number, number, number];
+
+// Type Attendu dans la Fonction Match.setScore()
+interface MatchScore {
+  playerOneScore: Score;
+  playerTwoScore: Score;
+  playerOnePoint: Point;
+  playerTwoPoint: Point;
+}
 
 function isPointNormalType(arg: Point): arg is PointNormal {
   return [AVANTAGEVALUE,WINGAMEVALUE].some(element => element === arg);
 }
 
-export {Point, PointNormal, PointTieBreak, isPointNormalType, Score};
+// Format du code erreur
+interface ErrorMessage {
+  code: number,
+  message: string
+}
+
+export {Point, PointNormal, PointTieBreak, Score, MatchScore, isPointNormalType, ErrorMessage};

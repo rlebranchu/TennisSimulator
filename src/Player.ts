@@ -1,4 +1,3 @@
-import { NBMAXGAMEFORWINSET, NBMINGAMEFORWINSET } from './Constantes';
 import {Score, Point} from './Types';
 
 export default class Player {
@@ -25,35 +24,24 @@ export default class Player {
         console.log(scoreString);
     }
 
-    changeGame(currentSet = 0, otherPlayerGame = 0, currentGameWinning = false) : boolean {
-        let isSetWin = false;
+    nextGame(currentGameWinning = false, currentSet = 0) : void {
         if(currentGameWinning){
+            console.log(this.name + " gagne le Set !" + "\n" + '----------------------------'); 
             // On gagne un jeu en plus dans le set en cours
-            this.score = this.score.map((value, index) => {
-                if(index == currentSet){
-                    return value+1;
-                }
-                else
-                    return value;
-            });
-            // On regarde si on a gagné le set en cours
-            switch (this.score[currentSet]){
-                case NBMINGAMEFORWINSET: // 6 : on gagne si l'adversaire à 4 ou moins
-                    isSetWin = otherPlayerGame <= 4;
-                    break;
-                case NBMAXGAMEFORWINSET: // 7 : on gagne dans tous les cas
-                    isSetWin = true;
-                    break;
-                default: // Dans les autres cas, on ne gagne pas le set en cours
-                    break;
-            }
-            // On regarde s'il a gagné le set : si oui, on incrémente le nombre de set gagné
-            if(isSetWin)
-                this.nbSetWin++;
+            this.score[currentSet]++;
         }
         // On repars sur un autre set
         this.gamePoint = 0;
+    }
 
-        return isSetWin;
+    nextSet() : void {
+        // Fonction appelé uniquement pour le gagnant du point, du jeu et du set
+        this.nbSetWin++;
+    }
+
+    setState(score: Score, point: Point, nbSetWin: number): void {
+        this.score = score;
+        this.gamePoint = point;
+        this.nbSetWin = nbSetWin;
     }
 }
