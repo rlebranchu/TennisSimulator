@@ -22,17 +22,25 @@ De plus, il répond aux besoins du projet :
   - playPoint() : simuler le point gagné d'un joueur aléatoirement
   - Intégration de Jest dans le projets pour effectuer des tests unitaires
   - Intégration de EsLint pour accentuer la qualité du code 
+  - setScore : donner un état au match en cours <br/>
+    Format du paramètre attendu : 
+           
+          interface MatchScore {
+            playerOneScore: Score;
+            playerTwoScore: Score;
+            playerOnePoint: Point;
+            playerTwoPoint: Point;
+          }
  
 *D'autres fonctions sont définis mais non-utilisables. Elle permettent un bon fonctionnement du programme.
-(Exemple : comparePoint, comparePointTieBreak, analyseSituationAfterPoint, etc.)*
-
-## Fonctions à venir :
-  - setScore : donner un état au match en cours
+(Exemple : comparePoint, comparePointTieBreak, analyseSituationAfterPoint, isSetWnon, isMatchWon, etc.)*
 
 ## Comment lancer le projet :
-  1. Etablir dans main.js l'algorithme de gain de point (via les fonctions établis ci dessus)
+  1. Etablir dans main.js l'algorithme du match souhaité (via les fonctions établis ci dessus)
   2. Lancer la commande : npm run start
 
 ## Comment lancer les tests unitaires :
-  1. Dans le fichier global du projet, lancer la commande : npm test
+  - Dans le fichier global du projet, lancer la commande : npm test
 
+## Comment lancer la vérification du code par EsLint :
+  - Dans le fichier global du projet, lancer la commande : npm run lint
