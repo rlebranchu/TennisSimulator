@@ -106,7 +106,7 @@ export default class Match {
 
     // public only for jest
     public comparePointTieBreak(playerWinner: Player, playerLoser: Player): void {
-        let playerWinnerPoint: Point = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
+        let playerWinnerPoint: Point = playerWinner.gamePoint;
         const playerLoserPoint: Point = playerLoser.gamePoint;
         if (isPointTieBreak(playerWinnerPoint) && isPointTieBreak(playerLoserPoint)) { // On vérifie que les points actuels sont bien des entiers : sinon erreur
             playerWinnerPoint++;
