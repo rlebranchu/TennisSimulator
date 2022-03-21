@@ -150,7 +150,7 @@ describe('Test Match', () => {
         expect(match.getPlayerTwo().score).toBe(playerTwoScore);
     })
 
-    it('setScoreError1WongNbGameInSet', () => {
+    it('setScoreError1WrongNbGameInSet', () => {
         const playerOneScore : Score = [8,4,1];
         const playerTwoScore : Score = [6,6,0];
         const playerOnePoint : PointNormal = 15;
@@ -282,7 +282,7 @@ describe('Test Match', () => {
         expect(match.getPlayerTwo().score).toStrictEqual(startScore);
     })
 
-    it('setScoreError5AvanatgeWithout40', () => {
+    it('setScoreError6AvantageWithout40', () => {
         const playerOneScore : Score = [6,4,0];
         const playerTwoScore : Score = [3,6,0];
         const playerOnePoint : PointNormal = AVANTAGEVALUE;
@@ -296,7 +296,7 @@ describe('Test Match', () => {
         }
 
         const result = match.setScore(score);
-        expect(result.code).toBe(6); // Les deux joueurs sont à l'avantage
+        expect(result.code).toBe(6); // Avantage sans 40
         expect(match.getCurrentSet()).toBe(0);
         expect(match.getPlayerOne().gamePoint).toBe(0);
         expect(match.getPlayerTwo().gamePoint).toBe(0);
@@ -304,7 +304,7 @@ describe('Test Match', () => {
         expect(match.getPlayerTwo().score).toStrictEqual(startScore);
     })
 
-    it('setScoreError6WrongPointInNormalGame', () => {
+    it('setScoreError7WrongPointInNormalGame', () => {
         const playerOneScore : Score = [6,4,0];
         const playerTwoScore : Score = [3,2,0];
         const playerOnePoint : Point = 0;
@@ -318,7 +318,53 @@ describe('Test Match', () => {
         }
 
         const result = match.setScore(score);
-        expect(result.code).toBe(7); // L'un des joueurs a l'avantage dans un tie-break
+        expect(result.code).toBe(7); // L'un des points n'a pas une valeur attendue
+        expect(match.getCurrentSet()).toBe(0);
+        expect(match.getPlayerOne().gamePoint).toBe(0);
+        expect(match.getPlayerTwo().gamePoint).toBe(0);
+        expect(match.getPlayerOne().score).toStrictEqual(startScore);
+        expect(match.getPlayerTwo().score).toStrictEqual(startScore);
+    })
+
+    it('setScoreError8TieBreakWithToWrongDiffBetweenPoints', () => {
+        const playerOneScore : Score = [6,4,6];
+        const playerTwoScore : Score = [3,6,6];
+        const playerOnePoint : Point = 7;
+        const playerTwoPoint : Point = 9;
+        const startScore : Score = [0,0,0];
+        const score: MatchScore = {
+            playerOneScore: playerOneScore,
+            playerTwoScore: playerTwoScore,
+            playerOnePoint: playerOnePoint,
+            playerTwoPoint: playerTwoPoint
+        }
+
+        const result = match.setScore(score);
+        expect(result.code).toBe(8); // Ecart de points de tiebreak incorrect
+        expect(match.getCurrentSet()).toBe(0);
+        expect(match.getPlayerOne().gamePoint).toBe(0);
+        expect(match.getPlayerTwo().gamePoint).toBe(0);
+        expect(match.getPlayerOne().score).toStrictEqual(startScore);
+        expect(match.getPlayerTwo().score).toStrictEqual(startScore);
+    })
+
+    
+
+    it('setScoreError9MatchWinIn2SetsButThirdSetBegun', () => {
+        const playerOneScore : Score = [6,6,0];
+        const playerTwoScore : Score = [3,4,0];
+        const playerOnePoint : Point = 15;
+        const playerTwoPoint : Point = 0;
+        const startScore : Score = [0,0,0];
+        const score: MatchScore = {
+            playerOneScore: playerOneScore,
+            playerTwoScore: playerTwoScore,
+            playerOnePoint: playerOnePoint,
+            playerTwoPoint: playerTwoPoint
+        }
+
+        const result = match.setScore(score);
+        expect(result.code).toBe(9); // Troisième set commencé alors que les deux premiers remportés par le meme joueur
         expect(match.getCurrentSet()).toBe(0);
         expect(match.getPlayerOne().gamePoint).toBe(0);
         expect(match.getPlayerTwo().gamePoint).toBe(0);
