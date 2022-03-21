@@ -232,11 +232,14 @@ export default class Match {
             matchScore.playerOneScore[currentSet] ==6 && matchScore.playerTwoScore[currentSet] == 6
         )
             return {code: 5, message: "Impossible d'avoir un avantage dans un jeu de tie-break"};
+        // Avantage avec autre Joueur pas à 40
+        if([matchScore.playerOnePoint, matchScore.playerTwoPoint].includes(AVANTAGEVALUE) && ![matchScore.playerOnePoint, matchScore.playerTwoPoint].includes(MAXPOINTINGAME))
+            return {code: 6, message: "Si l'un joueur à l'avantage, l'autre doit avoir 40 points"};
         // Si on est pas dans un tie-break, ne pouvoir avoir que des points de Type PointNormaux
         if(!(isPointNormal(matchScore.playerOnePoint) && isPointNormal(matchScore.playerTwoPoint)) &&
             !(matchScore.playerOneScore[currentSet] == 6 && matchScore.playerTwoScore[currentSet] == 6)
         )
-            return {code: 6, message: "L'un des joueurs a des points imprévus dans un jeu normal"};
+            return {code: 7, message: "L'un des joueurs a des points imprévus dans un jeu normal"};
 
         // Si nous arrivons jusqu'ici, c'est que les vérifications sont bonnes
         // On compte le nombre de set gagnés par chacun

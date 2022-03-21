@@ -282,6 +282,28 @@ describe('Test Match', () => {
         expect(match.getPlayerTwo().score).toStrictEqual(startScore);
     })
 
+    it('setScoreError5AvanatgeWithout40', () => {
+        const playerOneScore : Score = [6,4,0];
+        const playerTwoScore : Score = [3,6,0];
+        const playerOnePoint : PointNormal = AVANTAGEVALUE;
+        const playerTwoPoint : PointNormal = 30;
+        const startScore : Score = [0,0,0];
+        const score: MatchScore = {
+            playerOneScore: playerOneScore,
+            playerTwoScore: playerTwoScore,
+            playerOnePoint: playerOnePoint,
+            playerTwoPoint: playerTwoPoint
+        }
+
+        const result = match.setScore(score);
+        expect(result.code).toBe(6); // Les deux joueurs sont à l'avantage
+        expect(match.getCurrentSet()).toBe(0);
+        expect(match.getPlayerOne().gamePoint).toBe(0);
+        expect(match.getPlayerTwo().gamePoint).toBe(0);
+        expect(match.getPlayerOne().score).toStrictEqual(startScore);
+        expect(match.getPlayerTwo().score).toStrictEqual(startScore);
+    })
+
     it('setScoreError6WrongPointInNormalGame', () => {
         const playerOneScore : Score = [6,4,0];
         const playerTwoScore : Score = [3,2,0];
@@ -296,7 +318,7 @@ describe('Test Match', () => {
         }
 
         const result = match.setScore(score);
-        expect(result.code).toBe(6); // L'un des joueurs a l'avantage dans un tie-break
+        expect(result.code).toBe(7); // L'un des joueurs a l'avantage dans un tie-break
         expect(match.getCurrentSet()).toBe(0);
         expect(match.getPlayerOne().gamePoint).toBe(0);
         expect(match.getPlayerTwo().gamePoint).toBe(0);
