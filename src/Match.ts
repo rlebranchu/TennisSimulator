@@ -1,5 +1,5 @@
 import Player from './Player';
-import { ErrorMessage, isPointNormalType, MatchScore, Point } from './Types';
+import { ErrorMessage, isPointNormal, isPointTieBreak, MatchScore, Point } from './Types';
 import { AVANTAGEVALUE, MAXPOINTINGAME, NBMAXGAMEFORWINSET, NBMINGAMEFORWINSET, ORDREPOINT, WINGAMEVALUE } from './Constantes';
 
 export default class Match {
@@ -108,7 +108,7 @@ export default class Match {
     public comparePointTieBreak(playerWinner: Player, playerLoser: Player): void {
         let playerWinnerPoint: Point = playerWinner.gamePoint; // A null : si a la fin c'est NULL -> c'est que j'ai gagné le jeu
         const playerLoserPoint: Point = playerLoser.gamePoint;
-        if (!isPointNormalType(playerWinnerPoint) && !isPointNormalType(playerLoserPoint)) { // On vérifie que les points actuels sont bien des entiers : sinon erreur
+        if (isPointTieBreak(playerWinnerPoint) && isPointTieBreak(playerLoserPoint)) { // On vérifie que les points actuels sont bien des entiers : sinon erreur
             playerWinnerPoint++;
             // Si le score du joueur ayant gagné le point atteint au minimum 7 et qu'il a deux points d'écarts
             if (playerWinnerPoint >= 7 && playerWinnerPoint >= playerLoserPoint + 2)
@@ -192,7 +192,7 @@ export default class Match {
         const maxScorePlayerTwo = Math.max(...matchScore.playerTwoScore);
         const minScorePlayerTwo = Math.min(...matchScore.playerTwoScore);
         if(maxScorePlayerOne > 7 || maxScorePlayerTwo > 7|| minScorePlayerOne < 0 || minScorePlayerTwo <0)
-            return {code: 1, message: "Les scores attribuer nes ont pas bons : avoir des jeux entre 0 et 7"};
+            return {code: 1, message: "Les scores attribués ne sont pas bons : avoir des jeux entre 0 et 7"};
 
         let currentSet = 0;
         this.getCurrentWinner(matchScore, playerWinnerOnSet, playerLoserOnSet, currentSet);
@@ -232,6 +232,11 @@ export default class Match {
             matchScore.playerOneScore[currentSet] ==6 && matchScore.playerTwoScore[currentSet] == 6
         )
             return {code: 5, message: "Impossible d'avoir un avantage dans un jeu de tie-break"};
+        // Si on est pas dans un tie-break, ne pouvoir avoir que des points de Type PointNormaux
+        if(!(isPointNormal(matchScore.playerOnePoint) && isPointNormal(matchScore.playerTwoPoint)) &&
+            !(matchScore.playerOneScore[currentSet] == 6 && matchScore.playerTwoScore[currentSet] == 6)
+        )
+            return {code: 6, message: "L'un des joueurs a des points imprévus dans un jeu normal"};
 
         // Si nous arrivons jusqu'ici, c'est que les vérifications sont bonnes
         // On compte le nombre de set gagnés par chacun

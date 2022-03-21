@@ -20,8 +20,12 @@ interface MatchScore {
   playerTwoPoint: Point;
 }
 
-function isPointNormalType(arg: Point): arg is PointNormal {
-  return [AVANTAGEVALUE,WINGAMEVALUE].some(element => element === arg);
+function isPointNormal(arg: Point): arg is PointNormal {
+  return [0,15,30,MAXPOINTINGAME,AVANTAGEVALUE,WINGAMEVALUE].some(element => element === arg);
+}
+
+function isPointTieBreak(arg: Point): arg is PointTieBreak {
+  return ![AVANTAGEVALUE,WINGAMEVALUE].some(element => element === arg);
 }
 
 // Format du code erreur
@@ -30,4 +34,4 @@ interface ErrorMessage {
   message: string
 }
 
-export {Point, PointNormal, PointTieBreak, Score, MatchScore, isPointNormalType, ErrorMessage};
+export {Point, PointNormal, PointTieBreak, Score, MatchScore, isPointNormal, isPointTieBreak, ErrorMessage};

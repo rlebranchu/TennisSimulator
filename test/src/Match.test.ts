@@ -282,4 +282,26 @@ describe('Test Match', () => {
         expect(match.getPlayerTwo().score).toStrictEqual(startScore);
     })
 
+    it('setScoreError6WrongPointInNormalGame', () => {
+        const playerOneScore : Score = [6,4,0];
+        const playerTwoScore : Score = [3,2,0];
+        const playerOnePoint : Point = 0;
+        const playerTwoPoint : Point = 12;
+        const startScore : Score = [0,0,0];
+        const score: MatchScore = {
+            playerOneScore: playerOneScore,
+            playerTwoScore: playerTwoScore,
+            playerOnePoint: playerOnePoint,
+            playerTwoPoint: playerTwoPoint
+        }
+
+        const result = match.setScore(score);
+        expect(result.code).toBe(6); // L'un des joueurs a l'avantage dans un tie-break
+        expect(match.getCurrentSet()).toBe(0);
+        expect(match.getPlayerOne().gamePoint).toBe(0);
+        expect(match.getPlayerTwo().gamePoint).toBe(0);
+        expect(match.getPlayerOne().score).toStrictEqual(startScore);
+        expect(match.getPlayerTwo().score).toStrictEqual(startScore);
+    })
+
 })
